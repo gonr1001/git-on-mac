@@ -1,0 +1,303 @@
+%%%%%%% à
+%%%%%%% located at forAll
+
+\usepackage[utf8]{inputenc}
+
+
+
+\renewcommand{\rmdefault}{ptm}
+\renewcommand{\bfdefault}{b}
+\usepackage[scaled=0.92]{helvet}
+\usepackage{courier}
+\normalfont % in case the EC fonts aren't available
+
+%\usepackage[T1]{fontenc}
+%\RequirePackage[latin1]{inputenc}
+
+
+\NeedsTeXFormat{LaTeX2e}
+%\usepackage{applekeys}
+%\usepackage{titling}
+%\usepackage{titlesec}
+\usepackage{latexsym}
+\RequirePackage[french]{babel}    % in class
+\RequirePackage{algorithm}
+\RequirePackage{algorithmic}
+\usepackage{listings} %  in class
+\RequirePackage{url}  % in class
+\RequirePackage{xcolor} %  in class
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning,arrows}
+
+\def\eXit{$\epsilon$\kern-.100em \lower.5ex\hbox{X}\kern-.125em it}
+
+%\usepackage{tikz-uml}
+
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+
+\usepackage{graphicx}
+
+\usepackage{epigraph} 
+\epigraphnoindent
+
+\newcommand{\pasImp}{\color{red}Pas à implémenter.\color{black}}
+
+\bibliographystyle{alpha}
+\usepackage{listings}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{RGB}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+\definecolor{vertUdeS}{RGB}{0, 128, 85}
+
+
+\usepackage{inconsolata}
+\usepackage{textcomp}
+
+\usepackage{longtable}
+\usepackage{lipsum} % just for dummy text- not needed for a longtable
+
+\usepackage{hyperref}
+
+\RequirePackage{url}
+\RequirePackage[letterpaper,includeheadfoot,top=.5in,bottom=.5in,bindingoffset=.5in]{geometry}  %------ Format de page
+
+\lstset{language=Java,
+	basicstyle=\linespread{0.8}]\ttfamily,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  tabsize=2,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$$},  % this is not an error
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+
+
+\def\hdrule{\hrule \vskip2pt \hrule}
+\def\mots{\underline{\hspace*{0.75in}}\ }
+
+\def\eXit{$\epsilon$\kern-.100em \lower.5ex\hbox{X}\kern-.125em
+it}
+
+
+\newcommand{\brun}{\noindent $\triangleright$}
+\newcommand{\erun}{$\triangleleft$}
+\newcommand{\key}{\textsf}
+\newcommand{\ita}{\textit}
+\newcommand{\dos}{\textsc}
+\newcommand{\bld}{\textbf}
+\newcommand{\ang}{\textsf}
+\newcommand{\pro}{\texttt}
+
+%/newcommand{\name}{\textit{draw4US}}
+
+\newcommand{\ints}{\renewcommand{\baselinestretch}{1.0}\small \normalsize}
+\newcommand{\intm}{\renewcommand{\baselinestretch}{1.5}\small \normalsize}
+\newcommand{\intd}{\renewcommand{\baselinestretch}{2.0}\small \normalsize}
+
+\newcommand{\rbl}{\rule[-1mm]{10mm}{4mm}}
+
+\newcommand{\diamant}{DIAMANT}
+\newcommand{\dBug}{DiamantBug}
+\newcommand{\dWeb}{DiamantWeb}
+\newcommand{\dTri}{DiamantTri}
+\newcommand{\jreplay}{jReplay}
+\newcommand{\saphir}{SAPHIR}
+
+\newcommand{\applic}{\emph{EMR}}
+\newcommand{\XP}{\emph{eXtreme Programming}}
+\newcommand{\oop}{\og \emph{object-oriented programming} \fg{}}
+\newcommand{\refac}{\og \emph{refactorning} \fg{}}
+\newcommand{\dcloope}{d'ouverture-fermeture{}}
+
+\newcommand{\cloope}{ouverture-fermeture{}}
+\newcommand{\design}{\og \emph{design} \fg{}}
+\newcommand{\DesPats}{\og \emph{Design patterns} \fg{}}
+
+\newcommand{\mdc}{\emph{modèle de conception}}
+\newcommand{\mdcs}{\emph{modèles de conception}}
+\newcommand{\Mdcs}{\emph{Modèles de conception}}
+
+\newcommand{\Reusin}{\emph{Réusinage}}
+\newcommand{\reusin}{\emph{réusinage}}
+\newcommand{\reusins}{\emph{réusinages}}
+
+\newcommand{\cImp}{\og \emph{codeImpossible} \fg{}}
+
+\newcommand{\csessioni}{\emph{s3I}}
+
+\newcommand{\btrack}{ \emph{retour en arrière}}
+
+\newcommand{\steve}{Tim}
+
+%%%%%%
+
+
+
+\newcommand{\tdd}{\emph{développement piloté par les tests}}
+
+
+\newcommand{\Scrum}{\textsl{Scrum}}
+\newcommand{\ScrumTeam}{\textsl{Scrum team}}
+
+\newcommand{\scrumMaster}{\textsl{scrum master}}
+
+\newcommand{\productOwner}{\textsl{product owner}}
+
+\newcommand{\developer}{\textsl{developer}}
+
+
+\newcommand{\sprint}{\textsl{sprint}}
+\newcommand{\sprints}{\textsl{sprints}}
+
+\newcommand{\sprintReview}{\textsl{sprint review}}
+
+\newcommand{\sprintRetrospective}{\textsl{sprint retrospective}}
+
+\newcommand{\productBacklog}{\textsl{product backlog}}
+
+\newcommand{\sprintBacklog}{\textsl{sprint backlog}}
+
+\newcommand{\sprintPlanningMeeting}{\textsl{sprint planning meeting}}
+
+\newcommand{\dailySprintMeeting}{\textsl{daily sprint meeting}}
+
+\newcommand{\sprintBurndownChart}{\textsl{sprint burndown chart}}
+
+\newcommand{\releaseBurndownChart}{\textsl{release burndown chart}}
+
+\newcommand{\pprog}{\textsl{pair programming}}
+
+
+\newcommand{\useCase}{\textsl{use case}}
+\newcommand{\useCases}{\textsl{use cases}}
+
+\newcommand{\timeBoxed}{\textsl{time boxed}}
+
+\newcommand{\timeBox}{\textsl{time box}}
+
+
+\newcommand{\release}{\textsl{release}}
+\newcommand{\releases}{\textsl{releases}}
+
+\newcommand{\artifact}{\textsl{artifact}}
+\newcommand{\artifacts}{\textsl{artifacts}}
+
+\newcommand{\uds}{Universit\'{e} de Sherbrooke}
+
+\newcommand{\ra}{$\rightarrow$}
+
+\def\acrobat{\hyperdef{Sauter}{ACetEndroit}{}}
+
+\newcommand{\siteClassUML} {\href{https://fr.wikipedia.org/wiki/Diagramme_de_classes}{\texttt{https://fr.wikipedia.org/wiki/Diagramme\_de\_classes}}}
+
+\newcommand{\siteClassUMLEng}{ \href{https://en.wikipedia.org/wiki/Class_diagram}{\texttt{https://en.wikipedia.org/wiki/Class\_diagram}}}
+
+\newcommand{\siteAPP}{ \href{https://www.gel.usherbrooke.ca/s3i/e20/}{\texttt{https://www.gel.usherbrooke.ca/s3i/e20/}}}
+
+\newcommand{\siteForDis} {\href{http://www.usherbrooke.ca/genie/fc/fad/info/}{\texttt{http://www.usherbrooke.ca/genie/fc/fad/info/}}}
+
+\newcommand{\siteMoodle} {\href{http://www.usherbrooke.ca/webex/formation/capsules-dautoformation/training-center/}{\texttt{http://www.usherbrooke.ca/webex/formation/capsules-dautoformation/training-center/}}}
+
+\newcommand{\siteGEIpAgile} {\href{http://www.usherbrooke.ca/moodle2-cours/course/view.php?id=7764}{\texttt{http://www.usherbrooke.ca/moodle2-cours/course/}}}
+
+
+\newcommand{\siteCodeMakery} {\href{https://code.makery.ch/library/javafxt-utorial/}{\texttt{https://code.makery.ch/library/javafx-tutorial/}}}
+\newcommand{\sitejavaFXColl} {\href{https://docs.oracle.com/javase/8/javafx/collections-tutorial/collections.htm}{\texttt{https://docs.oracle.com/javase/8/javafx/collections-tutorial/collections.htm}}}
+
+
+
+
+\newcommand{\sitesvn} {\href{https://subversion.apache.org/}{\texttt{https://subversion.apache.org/}}}
+
+
+\newcommand{\sitesPropBind} {\href{https://docs.oracle.com/javase/8/javafx/properties-binding-tutorial/binding.htm/}{\texttt{https://docs.oracle.com/javase/8/javafx/properties-binding-tutorial/binding.htm}}}
+
+
+\newcommand{\rem}{\textbf{EMR}}
+\newcommand{\application}{\textbf{EMR Application}}
+\newcommand{\paintUS}{\textbf{xPaintUS}}
+\newcommand{\bSmells}{\og \emph{bad smells} \fg{}}
+\newcommand{\bSmell}{\og \emph{bad smell} \fg{}}
+
+
+\newcommand{\mockito}{\emph{Mockito}}
+
+
+\newcommand{\siteEMR} {\href{http://www.emrwebsite.org/uploads/Fichiers/Libraries/memo-EMR-2013.pdf}{\texttt{http://www.emrwebsite.org/uploads/Fichiers/memo-EMR-2013.pdf}}}
+
+
+\newcommand{\sitewThreeS} {\href{http://w3sdesign.com/index0100.php}{\texttt{http://w3sdesign.com/index0100.php}}}
+
+\newcommand{\sitetutorialsPoint} {\href{https://www.tutorialspoint.com/design\_pattern/index.htm}{\texttt{https://www.tutorialspoint.com/design\_pattern/index.htm}}}
+
+\newcommand{\siteJavaTPoint} {\href{https://www.javatpoint.com/design-patterns-in-java}{\texttt{https://www.javatpoint.com/design-patterns-in-java}}}
+
+
+
+\newcommand{\siteRef} {\href{http://www.refactoring.com/catalog/index.html}{\texttt{http://www.refactoring.com/catalog/index.html}}}
+\newcommand{\siteArtMOO} {\href{http://www.pitt.edu/~ckemerer/CK\%20research\%20papers/MetricForOOD\_ChidamberKemerer94.pdf}{\texttt{http://www.pitt.edu/MetricForOOD\_ChidamberKemerer94.pdf}}}
+
+
+\newcommand{\siteArtBug} {\href{http://thomas-zimmermann.com/publications/files/bettenburg-fse-2008.pdf}{\texttt{http://thomas-zimmermann.com/publications/files/bettenburg-fse-2008.pdf}}}
+
+
+
+\newcommand{\siteDependency} {\href{http://rcardin.github.io/programming/oop/software-engineering/2017/04/10/dependency-dot.html}{\texttt{http://rcardin.github.io/programming/oop/dependency-dot.html}}}
+
+\newcommand{\siteVCC} {\href{http://tictacserver.gel.usherbrooke.ca/updateVCC}{\texttt{http://tictacserver.gel.usherbrooke.ca/updateVCC}}}
+
+\newcommand{\sitePrin} {\href{http://www.regismedina.com}{\texttt{http://www.regismedina.com}}}
+
+\newcommand{\siteMetrics} {\href{http://metrics2.sourceforge.net/}{\texttt{http://metrics2.sourceforge.net/}}}
+
+\newcommand{\siteDQual} {\href{https://linux.ime.usp.br/\~joaomm/mac499/arquivos/referencias/oodmetrics.pdf}{\texttt{https://linux.ime.usp.br/oodmetrics.pdf}}}
+
+\newcommand{\siteSta} {\href{http://mil-oss.org/resources/objectmentor\_design-principles-and-design-patterns.pdf}{\texttt{http://\_design-principles-and-design-patterns.pdf}}}
+
+\newcommand{\sitejUnit} {\href{http://junit.sourceforge.net/doc/cookstour/cookstour.htm}{\texttt{ http://junit.sourceforge.net/doc/cookstour/cookstour.htm}}}
+
+\newcommand{\siteMockito} {\href{http://site.mockito.org/}{\texttt{http://site.mockito.org/}}}
+
+\newcommand{\siteMockitoTut} 
+{\href{http://www.vogella.com/tutorials/Mockito/article.html}{\texttt{http://www.vogella.com/tutorials/Mockito/article.html}}}
+
+
+\newcommand{\siteIeee} {\href{http://www.ieee.org/publications\_standards/publications/authors/authors\_journals.html}{\texttt{http://www.ieee.org/publications/authors\_journals.html}}}
+
+\newcommand{\siteremy} {\href{http://remy-manu.no-ip.biz/}{\texttt{http://remy-manu.no-ip.biz/}}}
+
+\newcommand{\sitecommu}{\href{http://www.oracle.com/technetwork/java/javase/community/javafx-community-2158661.html}{\texttt{http://www.oracle.com/technetwork/java/javase/community/javafx-community-2158661.html}}}
+
+
+\newcommand{\siterOracle} {\href{https://docs.oracle.com/javase/tutorial/}{\texttt{https://docs.oracle.com/javase/tutorial/}}}
+
+
+
+\newcommand{\siterOraFx} {\href{https://docs.oracle.com/en/java/javase/11/}{\texttt{https://docs.oracle.com/en/java/javase/11/}}}
+
+\newcommand{\siterDepen} {\href{http://tutorials.jenkov.com/ood/understanding-dependencies.html}{\texttt{http://tutorials.jenkov.com/ood/understanding-dependencies.html}}}
+
+\newcommand{\siteTutFX} {\href{http://code.makery.ch/library/javafx-8-tutorial/part1/}{\texttt{http://code.makery.ch/library/javafx-8-tutorial/part1/}}}
+
+\newcommand{\siteSlidesDP} {\href{https://users.encs.concordia.ca/~gregb/home/PDF/se_design_patterns.pdf}{\texttt{https://users.encs.concordia.ca/home/PDF/se\_design\_patterns.pdf}}}
+
+
+%\pagestyle{udsSpecial}			
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\svn}{\texttt{svn}}
+
+\newcommand{\git}{\texttt{git}}
+
