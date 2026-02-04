@@ -1,0 +1,116 @@
+\section{Organization}
+Afin de faciliter l'installation les noms suivants seront utilisés :
+Le serveur \git{} sera sur la machine \serv{}. Les clients seront sur d'autres machines sur le réseau local. Les clients seront \userOne{} et 
+\userTwo{}, \ldots{}
+
+On suppose que les OS des Macs ont été modifiés selon les applications installés. Donc, il faut faire des vérifications et des adaptations pour pouvoir travailler avec \git{}.
+
+Dans notre cas les machines utilisés ont des processeurs Intel. Lorsqu'il faut installer un logiciel il faut prendre en compte le processeur de la machine.
+
+Il y a plusieurs étapes pour avoir  un  serveur git opérationnel. 
+
+\begin{enumerate}
+    \item Accepter des utilisateurs qui vont utiliser \git{} sur le serveur.. 
+    \item Avoir un group : \gitG{}. 
+    \item L'installation de \git{} dans les machines utilisateurs et sur le serveur.
+    \item L'installation de \lstinline{ssh} pour avoir une communication crypté, installer un tunnel \lstinline{ssh} pour éviter d'ouvir le port 22.
+    \item L'administration de \git{} et  gestion de repos et son utilisation.
+\end{enumerate}
+
+MacOS est l'interface utilisateur pour le système Unix. Nous avons utilisé les commandes qui peuvent être données sur MacOS par rapport au commendes Unix.
+
+\subsection{Pré-conditions}
+Au niveau système :
+
+\begin{longtable} {|l|l|}
+\hline Élément	& Requis  \\  \hline  \hline
+\endfirsthead
+
+\hline Élément	& Requis  \\   \hline  \hline
+\endhead
+
+\hline \multicolumn{1}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+ 
+\hline 
+\endlastfoot
+OS serveur	& macOS (Intel ou Apple Silicon) \\ \hline
+Accès admin	 & Oui \\ \hline
+Réseau	Users peuvent  faire & ping au server \\ \hline
+DNS ou IP fixe	& Recommandé \\ \hline
+Port SSH	& 22 ou personnalisé \\ \hline
+\hline
+\end{longtable}
+
+\subsection{Vérification d'accès au serveur via le réseau sur chaque client}
+
+\begin{lstlisting}
+ping aplixserver.local
+\end{lstlisting}
+
+or
+
+\begin{lstlisting}
+ping 10.0.0.105
+\end{lstlisting}
+
+Réponses reçues
+\begin{lstlisting}
+64 bytes from 10.0.0.105: icmp_seq=0 ttl=64 timr=38.764 ms
+\end{lstlisting}
+
+
+\subsection{Vérifier qu’OpenSSH est installé, sur le Mac client}
+
+Normalement préinstallé, pour vérifier :
+
+\begin{lstlisting}
+ssh -V
+\end{lstlisting}
+
+Attendu :
+
+\begin{lstlisting}
+OpenSSH_9.x, LibreSSL ...
+\end{lstlisting}
+
+(la version peut être plus basse, c’est normal)
+
+Si c'est autre OpenSSH, ce celui de homebrew, doc pour revenir \lstinline{OpenSSH_9}
+
+Il faut faire passer /usr/bin AVANT Homebrew dans le PATH
+
+Édite ton \lstinline{nano ~/.bash_profile}
+
+Ajoute tout en haut du fichier :
+
+\begin{lstlisting}
+# Priority  Apple binaries
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+\end{lstlisting}
+
+
+Important : avant toute ligne Homebrew du type eval \lstinline{"$(/opt/homebrew/bin/brew shellenv)" ou /usr/local/bin}.
+
+Revérifier avec \lstinline{ssh -V}
+
+
+
+\subsection{Vérifier que Git est installé, sur le Mac}
+
+Normalement préinstallé, pour vérifier :
+
+\begin{lstlisting}
+git --version 
+\end{lstlisting}
+
+Attendu :
+
+\begin{lstlisting}
+git version 2.52.0 // ou plus recente
+\end{lstlisting}
+
+Ceci est la dernière version.
+
+
+Une fois que tout ceci à été effectué et/ou vérifié passer à la suite.

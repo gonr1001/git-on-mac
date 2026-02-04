@@ -4,7 +4,22 @@
 %\RequirePackage{utf8}{inputenc}
 \input{../genSetup}
 
-\title{Road to git}
+\renewcommand{\git}{\textsf{Git}}
+
+\newcommand{\serv}{\texttt{myserver.local}}
+
+\newcommand{\userOne}{\texttt{user1}}
+
+\newcommand{\userTwo}{\texttt{user2}}
+
+\newcommand{\userThree}{\texttt{user3}}
+
+\newcommand{\gitG}{\texttt{gitgroup}}
+
+
+
+
+\title{\git{} dans un environment Mac}
 \author{Ruben Gonzalez-Rubio}
 \date{janvier 2026}
 
@@ -17,21 +32,39 @@
 \listoftables
 \listoffigures
 
-\section{Introduction à git}
+\section{Introduction à \git{}}
 
-Git est un système de contrôle de versions distribué. Il permet de suivre l’évolution des fichiers d’un projet (souvent du code source), de revenir à des versions précédentes et de travailler efficacement à plusieurs. Contrairement aux systèmes centralisés, chaque utilisateur possède une copie complète du dépôt (repository) sur sa machine, incluant l’historique complet des modifications. Cela rend Git très rapide, robuste et utilisable même sans connexion réseau.
+\subsection{Pourquoi ce guide?}
 
-Le fonctionnement de Git repose sur des snapshots (instantanés) plutôt que sur une simple liste de différences entre fichiers. À chaque commit, Git enregistre l’état exact du projet. Les commits sont identifiés par des hashs cryptographiques (SHA-1 ou SHA-256), ce qui garantit l’intégrité des données : toute modification non autorisée de l’historique est immédiatement détectable. Git gère trois zones principales : le working directory (fichiers modifiés), l’index (staging area) et le repository local (local repo), ce qui donne un contrôle précis sur ce qui est réellement enregistré.
+Ce document donne un guide pour installer  \git{}  dans notre environnement comprenant des machines Macintosh. Il est une synthèse de plusieurs prompts faits à chat GPT. 
+Il a une organisation pour donner les commandes nécessaires pour vérifier que l'installation progresse à chaque étape.
 
-Un concept central de Git est la branche (branch). Une branche représente une ligne de développement indépendante, ce qui permet de travailler sur une fonctionnalité, un correctif ou une expérimentation sans affecter le code principal (souvent la branche main). Les branches sont légères et rapides à créer. Une fois le travail terminé, elles peuvent être fusionnées (merge) ou rebasées (rebase), facilitant ainsi la collaboration et la gestion de projets complexes.
+Ce document est nécessaire car, les informations pour faire l'installation sont réparties et ne donnent pas toujours les résultas attendus ou la manière de vérifier. 
 
-\subsection{Git et la sécurité}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.40]{images/git.png}
+\caption{\git{}}
+\end{figure} \label{fig:git}
+  
+Le requis est d'être le plus secure possible. Donc, le protocole à utiliser est le \lstinline{ssh://}, et un tunnel \lstinline{ssh}.
 
-La sécurité de Git repose d’abord sur l’intégrité des données. Chaque objet Git (commit, arbre, fichier) est identifié par un hachage cryptographique calculé à partir de son contenu. Cela garantit que toute modification non autorisée de l’historique ou des fichiers est immédiatement détectable, car le hash ne correspondrait plus. Ce mécanisme protège contre la corruption accidentelle et rend très difficile la falsification silencieuse de l’historique d’un projet.
 
-L’utilisation de SSH pour accéder aux dépôts Git distants renforce la sécurité des échanges réseau. SSH assure l’authentification forte des utilisateurs, généralement par clés cryptographiques (clé publique / clé privée), évitant l’usage de mots de passe transmis sur le réseau. Les communications sont chiffrées, ce qui protège le code source contre l’interception, l’écoute ou les attaques de type “man-in-the-middle”, même même sur des réseaux non sécurisés.
+\subsection{Pourquoi ce \git{}?}
 
-%\input{intro}
+\git{} est un système de contrôle de versions distribué. Il permet de suivre l’évolution des fichiers d’un projet (souvent du code source), de revenir à des versions précédentes et de travailler efficacement à plusieurs. Contrairement aux systèmes centralisés, chaque utilisateur possède une copie complète du dépôt (repository) sur sa machine, incluant l’historique complet des modifications. Cela rend \git{} très rapide, robuste et utilisable même sans connexion réseau.
+
+Le fonctionnement de \git{} repose sur des snapshots (instantanés) plutôt que sur une simple liste de différences entre fichiers. À chaque commit, Git enregistre l’état exact du projet. Les commits sont identifiés par des hashs cryptographiques (SHA-1 ou SHA-256), ce qui garantit l’intégrité des données : toute modification non autorisée de l’historique est immédiatement détectable. \git{} gère trois zones principales : le working directory (fichiers modifiés), l’index (staging area) et le repository local (local repo), ce qui donne un contrôle précis sur ce qui est réellement enregistré.
+
+Un concept central de \git{} est la branche (branch). Une branche représente une ligne de développement indépendante, ce qui permet de travailler sur une fonctionnalité, un correctif ou une expérimentation sans affecter le code principal (souvent la branche main). Les branches sont légères et rapides à créer. Une fois le travail terminé, elles peuvent être fusionnées (merge) ou rebasées (rebase), facilitant ainsi la collaboration et la gestion de projets complexes.
+
+\subsection{\git{} et la sécurité}
+
+La sécurité de \git{} repose d’abord sur l’intégrité des données. Chaque objet \git{} (commit, arbre, fichier) est identifié par un hachage cryptographique calculé à partir de son contenu. Cela garantit que toute modification non autorisée de l’historique ou des fichiers est immédiatement détectable, car le hash ne correspondrait plus. Ce mécanisme protège contre la corruption accidentelle et rend très difficile la falsification silencieuse de l’historique d’un projet.
+
+L’utilisation de \lstinline{ssh} pour accéder aux dépôts Git distants renforce la sécurité des échanges réseau. \lstinline{ssh} assure l’authentification forte des utilisateurs, généralement par clés cryptographiques (clé publique / clé privée), évitant l’usage de mots de passe transmis sur le réseau. Les communications sont chiffrées, ce qui protège le code source contre l’interception, l’écoute ou les attaques de type “man-in-the-middle”, même même sur des réseaux non sécurisés.
+
+\input{orga}
 
 %\input{users}
 
