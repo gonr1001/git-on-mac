@@ -150,3 +150,97 @@ expliquer Git + Gradle
 
 ou faire un schéma visuel du flux Git
 
+
+Voici la procédure correcte et complète pour renommer la branche master en main, sans erreur, dans ton contexte (repo bare + SSH + multi-users).
+
+\subsection{Renommer la branche locale}
+
+Sur ta machine cliente :
+
+\begin{lstlisting}
+git branch -m master main
+\end{lstlisting}
+
+Vérifier :
+\begin{lstlisting}
+git branch
+\end{lstlisting}
+
+tu dois voir  \lstinline{* main}
+
+\subsection{Pousser main vers le serveur}
+git push -u origin main
+
+\subsection{Définir main comme branche par défaut (OBLIGATOIRE)}
+
+Sur le serveur, dans le repo bare :
+
+\begin{lstlisting}
+cd /Users/git/reposGit/mp.git
+git symbolic-ref HEAD refs/heads/main
+\end{lstlisting}
+
+Vérifier :
+
+cat HEAD
+
+
+Résultat attendu :
+
+ref: refs/heads/main
+
+4️⃣ Supprimer l’ancienne branche master (optionnel mais propre)
+
+⚠️ uniquement si plus personne ne l’utilise :
+
+git push origin --delete master
+
+5️⃣ Mettre à jour les autres clients (si existants)
+
+Sur chaque machine :
+
+git fetch origin
+git branch -m master main
+git branch -u origin/main main
+git remote set-head origin -a
+
+✅ Vérifications finales
+git branch -a
+git remote show origin
+
+
+Tu dois voir :
+
+branche locale : main
+
+distante : origin/main
+
+HEAD → main
+
+🧠 Cas particuliers
+🔴 Eclipse ne montre aucune branche
+
+➡️ Étape 3 non faite
+
+🔴 Repo bare sans commits
+
+➡️ Fais d’abord un commit :
+
+echo init > README.md
+git add README.md
+git commit -m "init"
+git push origin master
+
+
+Puis recommence la procédure.
+
+🟢 Pour tous les futurs repos
+git config --global init.defaultBranch main
+
+✔️ Résumé ultra-court
+git branch -m master main
+git push -u origin main
+cd mp.git && git symbolic-ref HEAD refs/heads/main
+git push origin --delete master
+
+
