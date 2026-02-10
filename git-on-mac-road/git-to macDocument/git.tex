@@ -1,0 +1,152 @@
+\section{Les repos de \git{}}
+
+2 scénarios courants :
+
+\begin{enumerate}
+\item  créer un nouveau dépôt Git (repo)
+\item  créer un projet qui utilise ce repo (local + serveur)
+\end{enumerate}
+
+\subsection{Créer un nouveau dépôt \git{}}
+
+\begin{enumerate}
+\item  Repo local (le plus simple)
+
+À utiliser si tu travailles seul ou avant de pousser vers un serveur.
+
+\begin{lstlisting}
+mkdir mon-projet
+cd mon-projet
+git init
+\end{lstlisting}
+
+Résultat :
+
+Un dossier \lstinline{.git/} est créé
+
+Ton projet est maintenant un repo \git{}.
+
+Vérifie :
+
+git status
+
+\item Repo serveur (bare) (nécessaire pour partage)
+
+Un repo bare sert uniquement à recevoir des push.
+
+\begin{lstlisting}
+mkdir mon-projet.git
+cd mon-projet.git
+git init --bare
+\end{lstlisting}
+
+Important : Pas de fichiers de code ici. Uniquement pour push / pull
+\end{enumerate}
+
+\subsection{ Créer un projet qui utilise ce repo}
+
+\begin{enumerate}
+
+\item  Projet local \ra{} push vers serveur
+Étape 1 : créer le projet
+
+\begin{lstlisting}
+mkdir mon-projet
+cd mon-projet
+git init
+\end{lstlisting}
+
+
+
+Ajoute un fichier :
+
+\begin{lstlisting}
+echo "# Mon projet" > README.md
+git add .
+git commit -m "Initial commit"
+\end{lstlisting}
+
+\begin{lstlisting}
+git branch -m master main
+\end{lstlisting}
+
+Étape 2 : lier au repo distant
+\begin{lstlisting}
+git remote add origin ssh://user@serveur/chemin/mon-projet.git
+\end{lstlisting}
+
+
+Vérifie :
+\begin{lstlisting}
+git remote -v
+\end{lstlisting}
+
+Étape 3 : créer la branche principale et pousser
+
+\begin{lstlisting}
+git branch -M main
+git push -u origin main
+\end{lstlisting}
+
+
+ Le projet utilise maintenant le repo distant
+
+\item  Projet depuis un repo existant (clone)
+
+\begin{lstlisting}
+git clone ssh://user@serveur/chemin/mon-projet.git
+cd mon-projet
+\end{lstlisting}
+
+\end{enumerate}
+
+
+Tu peux commencer à coder directement
+
+\subsection{Cycle de travail Git (quotidien)}
+
+\begin{lstlisting}
+git status
+git add .
+git commit -m "Description du changement"
+git push
+\end{lstlisting}
+
+
+Pour récupérer les changements :
+
+\begin{lstlisting}
+git pull
+\end{lstlisting}
+
+\subsection{Cas particulier : repo bare sans branche}
+
+Si après clone tu vois aucune branche :
+
+\begin{lstlisting}
+git branch -M main
+git push -u origin main
+\end{lstlisting}
+
+Ou vérifie :
+
+\begin{lstlisting}
+git symbolic-ref HEAD refs/heads/main
+\end{lstlisting}
+
+Résumé rapide 
+Action	Commande
+Créer repo local	git init
+Créer repo serveur	git init --bare
+Lier repo distant	git remote add origin ...
+Premier push	git push -u origin main
+Cloner un repo	git clone ...
+
+Si tu veux, je peux ensuite :
+
+te montrer exactement la même chose dans Eclipse
+
+expliquer Git + Gradle
+
+ou faire un schéma visuel du flux Git
+

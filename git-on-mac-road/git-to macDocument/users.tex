@@ -1,0 +1,116 @@
+\section{Prise en charge des utilisateurs et développeurs}
+
+Selon la figure \ref{fig:gitorg},  Les développeurs communiquent avec le \serv{} via le réseau. On utilisé 
+Le protocol \lstinline{ssh}. Chaque développeur doit avoir un compte sur le Mac \serv{}., qui contient les \lstinline{repositories git bare}.  Il doit aussi avoir une compte \lstinline{git}. Il y aura un répertoire \lstinline{/Users/git/reposGit} pour contenir les repositories.
+
+\subsection{Création de l'utilisateur \lstinline{git} sur le serveur}
+Aller Apple Menu  \ra{} System settings \ldots \ra{} Users \& Groups \ra{} \userX{} bouton Add User.
+
+Nom complet \lstinline{guiU // sans importance}
+
+Nom du compte (shortname important !) : \lstinline{git}
+
+Donner mot de passe
+
+Créer l'utilisateur.
+
+Se loger sur l'utilisateur \lstinline{git} et créer le répertoire \lstinline{reposGit}. 
+Doner \lstinline{mkdir} et le nom \lstinline{reposGit}. 
+
+\subsection{Créer un groupe \lstinline{gitgroup}}
+
+Aller Apple Menu  \ra{} System settings \ldots \ra{} Users \& Groups \ra{} \userX{} bouton Add Group \lstinline{gitgroup}.
+
+Ensuite donner :
+
+\begin{lstlisting}
+sudo chown git /Users/git/reposGit
+sudo chgrp -R gitgroup /User/git/reposGit
+\end{lstlisting}
+
+Vérifier :
+
+\begin{lstlisting}
+ls -ld /Users/git/repoGit
+\end{lstlisting}
+
+Résultat attendu :
+\begin{lstlisting}
+drwxrwsr-x git gitgroup ...  /Users/git/reposGit
+\end{lstlisting}
+
+\subsection{Création des utilisateur (développeur) sur le serveur}
+Il faut créer des comptes utilisateurs sur le serveur macOS (\serv{}) via l’interface graphique.
+
+Aller Apple Menu  \ra{} System settings \ldots \ra{} Users \& Groups \ra{} \userX{} bouton Add User.
+
+Choisir : Utilisateur standard (recommandé pour accès \lstinline{SSH} + \git{})
+
+Donner :
+
+Nom complet \lstinline{r g r  // sans importance}
+
+Nom du compte (shortname important !), par exemple : \userOne{}
+
+Mot de passe
+
+Créer l'utilisateurs nécessaires.
+
+Aller Apple Menu  \ra{} System settings \ldots \ra{} Users \& Groups \ra{} \userX{} bouton I de  \lstinline{gitgroup} et ajouter les utilisateurs qui vont utiliser \git{}.
+
+\subsection{Vérification sur le serveur que les comptes existent}
+
+\begin{lstlisting}
+dscl . -list /Users
+\end{lstlisting}
+
+
+\subsection{Activer "Remote Login" sur serveur}
+
+Pour avoir un accès par un client à l'extérieur du serveur. Sur le serveur configurer:
+
+Aller Apple Menu  \ra{} System settings \ldots \ra{} General \ra{} Sharing Activer Remote Login.
+
+Activer File Sharing, Remote Management, RemoteLoging, et Remote Application Scripting.
+À chaque option aller dans i et faites le nécessaire.
+
+
+\subsection{Vérification  du remote login sur serveur}
+
+Dans le terminal du serveur :
+
+\begin{lstlisting}
+sudo systemsetup -getremotelogin
+\end{lstlisting}
+
+Doit afficher :
+
+\begin{lstlisting}
+Remote Login: On
+\end{lstlisting}
+
+
+
+\subsection{Vérification qu'un utilisateur sur Mac client  a accès au serveur}
+Accéder au serveur depuis un autre Mac
+Connexion SSH simple (mot de passe)
+
+Sur le Mac user :
+
+\begin{lstlisting}
+ssh rgrmini1@aplixserveur.local
+\end{lstlisting}
+
+
+
+La première fois, il faut répondre :
+
+\begin{lstlisting}
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+\end{lstlisting}
+
+Donner 
+
+\begin{lstlisting}
+yes
+\end{lstlisting}

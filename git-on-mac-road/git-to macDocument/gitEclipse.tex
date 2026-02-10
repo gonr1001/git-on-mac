@@ -1,0 +1,202 @@
+\section{Eclipse}
+
+Le guide clair et fiable pour Eclipse (EGit), sans trous, depuis zéro jusqu’au premier push, avec les écrans importants et les erreurs à éviter.
+
+Je distingue 2 cas réels (c’est important dans Eclipse).
+
+PRÉREQUIS (à vérifier une fois)
+
+Dans Eclipse :
+
+EGit installé (par défaut dans Eclipse IDE)
+
+SSH configuré (\lstinline{~/.ssh/id_ed25519})
+
+Test SSH OK :
+
+ssh -T user@serveur
+
+
+Dans Eclipse :
+
+Window \ra{} Preferences \ra{} General \ra{} Network Connections \ra{} SSH2
+
+
+Private keys : \lstinline{~/.ssh/id_ed25519}
+
+SSH executable : Native
+
+CAS 1 Créer un NOUVEAU repo Git + projet Eclipse (le plus courant)
+
+Étape 1 — Créer le projet Eclipse
+File → New → Project
+
+
+Exemple Java :
+
+Java → Java Project
+
+
+Project name : MonProjet
+
+JRE : correct
+
+NE PAS cocher “Create Git repository here”
+
+Clique Finish
+
+ Étape 2 — Partager le projet avec Git
+Right click sur le projet
+\ra{} Team \ra{} Share Project
+
+
+Choisir :
+
+Git
+
+
+Puis :
+
+Use or create repository in parent folder of project
+
+
+Clique Create Repository
+Puis Finish
+
+ Le projet est maintenant un repo Git local
+
+ Étape 3 — Premier commit
+Right click projet
+\ra{} Team \ra{} Commit
+
+
+Dans la vue Commit :
+
+Sélectionne les fichiers
+
+Message : Initial commit
+
+ NE PAS cocher “Commit and Push”
+
+Clique Commit
+
+ Étape 4 — Lier au repo distant
+Right click projet
+\ra{} Team \ra{} Remote \ra{} Push
+
+
+Dans Push Configuration :
+
+URI :
+
+\begin{lstlisting}
+ssh://user@serveur/srv/git/MonProjet.git
+\end{lstlisting}
+
+Clique Next
+
+Étape 5 — Branches (IMPORTANT)
+
+Dans Source Ref :
+
+main
+
+Si main n’existe pas :
+
+Right click projet
+→ Team → Switch To → New Branch
+
+
+Branch name : main
+
+Checkout branch : 
+
+Puis recommence le Push.
+
+Étape 6 — Push final
+
+Dans Destination Ref :
+
+refs/heads/main
+
+
+Clique Finish
+
+ Repo distant opérationnel
+
+CAS 2 Créer un projet Eclipse À PARTIR d’un repo Git existant
+
+Étape 1 — Cloner le repo
+File \ra{} Import
+\ra{} Git \ra{} Projects from Git
+\ra{} Clone URI
+
+
+URI :
+
+\begin{lstlisting}
+ssh://user@serveur/srv/git/MonProjet.git
+\end{lstlisting}
+
+Auth :
+
+SSH
+
+User : user
+
+Key : automatique
+
+Étape 2 — Sélection de branches
+
+Toujours cocher au moins une branche
+
+main
+
+
+Clique Next
+
+Étape 3 — Import du projet
+
+Choisir :
+
+Import existing Eclipse projects
+
+
+Clique Finish
+
+ Projet prêt
+
+ Cycle de travail Git dans Eclipse
+Action	Menu
+Commit	Team \ra{} Commit
+Push	Team \ra{} Push
+Pull	Team \ra{} Pull
+Créer branche	Team \ra{} Switch To \ra{} New Branch
+Voir statut	Team \ra{} Synchronize
+ERREURS FRÉQUENTES \& SOLUTIONS
+ “No branches available”
+
+ Le repo bare est vide
+Solution :
+
+git push -u origin main
+
+ “Push not permitted”
+
+Permissions serveur incorrectes
+ Vérifier :
+\begin{lstlisting}
+ls -ld /srv/git
+ls -ld /srv/git/MonProjet.git
+
+ "detected dubious ownership"
+git config --global --add safe.directory /srv/git/MonProjet.git
+\end{lstlisting}
+
+
+RÉSUMÉ EXPRESS
+Nouveau projet
+New Project \ra{} Share Project \ra{} Commit \ra{} Push
+
+Repo existant
+Clone \ra{} Select branch \ra{} Import

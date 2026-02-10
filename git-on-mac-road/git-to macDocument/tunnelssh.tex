@@ -1,0 +1,150 @@
+\section{Le tunnel ssh}
+Un tunnel SSH (ou SSH port forwarding) sert à faire passer du trafic réseau à travers une connexion SSH chiffrée.
+
+Il permet :
+
+\begin{itemize}
+
+\item Sécuriser un service non sécurisé
+
+Exemple : accéder en HTTPS via un tunnel à un serveur HTTP local non exposé.
+
+\item Accéder à un service distant comme s’il était local
+
+Exemple : accéder à un serveur SVN, MySQL, ou une interface web située derrière un firewall.
+
+\item Contourner des restrictions réseau
+
+Exemple : accéder à une machine du LAN privé via un serveur bastion.
+
+\end{itemize}
+
+Le principe :
+
+Le client SSH ouvre un port local (ex. : 8080)
+
+Tout ce qui va à localhost:8080 passe dans un tunnel chiffré
+
+Le serveur SSH renvoie le trafic à la machine/port cible
+
+Sécuriser SVN
+
+Le protocole svn:// n’est pas chiffré.
+Avec SSH → tout est chiffré automatiquement.
+
+ Accéder à un serveur SVN non exposé
+
+Par exemple, si le serveur SVN écoute en interne sur localhost:3690, sans être ouvert sur Internet.
+
+Contourner un firewall / routeur
+
+Si l’accès direct au port SVN (3690) est bloqué.
+
+ Accéder au repository SVN comme s’il était en local
+
+Le client SVN croit qu’il parle à localhost, mais le tunnel redirige vers le serveur.
+
+\subsection{ Configuration du tunnel SSH pour SVN}
+
+Supposons :
+
+Serveur SVN écoute sur : localhost:3690
+
+Serveur SSH : user@serveur.example.com
+
+Sur ton Mac, on crée un port local : 3690
+
+Commande du tunnel SSH (mode Local Forwarding)
+\begin{lstlisting}
+ssh -L 3690:localhost:3690 user@serveur.example.com    
+\end{lstlisting}
+
+
+
+Ce que cela fait :
+
+Quand SVN accède à localhost:3690 sur ton Mac
+→ le trafic passe par SSH
+→ et arrive sur serveur.example.com:3690
+
+\subsection{Vérification du tunnel SSH avant d’utiliser SVN} 
+Étape 1 : Vérifier que le tunnel fonctionne
+
+Dans un autre terminal, après avoir lancé le tunnel :
+
+nc -zv localhost 3690
+
+
+Tu dois voir :
+
+Connection to localhost port 3690 succeeded!
+
+Étape 2 : Vérifier que SVN répond depuis le tunnel
+
+Toujours dans un terminal :
+
+svn info svn://localhost/
+
+
+Si cela fonctionne → tu as bien accès au repo via SSH.
+
+\subsection{Utiliser SVN via le tunnel SSH}
+
+Dans ton client SVN, tu peux maintenant utiliser :
+
+\begin{lstlisting}
+ svn co svn://localhost/nom_du_repo   
+\end{lstlisting}
+
+
+ou
+
+svn ls svn://localhost/
+
+
+ Le client parle à localhost, mais en réalité il utilise le port folwardé via SSH.
+
+\subsection{Tunnel SSH persistant pour SVN (facultatif)}
+
+Pour éviter de relancer la commande manuellement :
+
+Installer autossh (macOS) :
+brew install autossh
+
+Lancer un tunnel fiable :
+autossh -M 0 -L 3690:localhost:3690 user@serveur.example.com
+
+\subsection{Problèmes fréquents (et solutions)}
+ Le tunnel ne se connecte pas
+
+Vérifier le port SSH :
+
+ssh user@serveur.example.com
+
+ SVN renvoie une erreur « Connection refused »
+
+Le service SVN n’écoute peut-être que sur IPv4.
+Essaye :
+
+ssh -L 3690:127.0.0.1:3690 user@serveur.example.com
+
+ Le serveur SVN n’est pas lancé
+
+Sur le serveur :
+
+\begin{lstlisting}
+ ps aux | grep svnserve   
+\end{lstlisting}
+
+
+
+ou lancer :
+
+svnserve -d -r /chemin/vers/repos
+
+\subsection{Résumé rapide}
+Étape	Action
+1	Lancer tunnel SSH : ssh -L 3690:localhost:3690 user@serveur
+2	Vérifier port : nc -zv localhost 3690
+3	Vérifier SVN : svn info svn://localhost/
+4	Utiliser SVN : svn co svn://localhost/repo

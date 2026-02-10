@@ -1,0 +1,425 @@
+\section{Sécuriser \git +  \lstinline{SSH} }
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.060]{images/ssh.png}
+\caption{ssh}
+\end{figure} \label{fig:ssh}
+
+
+\subsection{Créer sur le client un Clé SSH moderne et forte (ED25519)}
+
+Sur le client. À faire une seule fois . Aller dans \lstinline{~/.ssh} :
+
+\begin{lstlisting}
+ssh-keygen -t ed25519 -a 100  -C "id_user1_key"
+\end{lstlisting}
+
+Donner le nom du fichier \lstinline{id_user1_key}
+pas de passphrase ou choix d'en mettre une.
+
+
+ED25519 (rapide + sûr)
+
+-a 100 = dérivation lente (anti-bruteforce)
+
+Enter passphrase obligatoire, ne pas choisir empty for no passphrase.
+
+Donner une passphrase, elle sera demande à la connection, plus tard.
+
+Il demande aussi dans quel fichier sauvegarder clés donner : \lstinline{id_user1_key}.
+Ceci crée deux fichiers \lstinline{id_user1_key} et \lstinline{id_user1_key.pub}
+
+Le prefix \lstinline{id}  est utilisé dans une autre commande pour copier la clé du client au serveur.
+
+Vérifier la présence des clés sur le client:
+
+\begin{lstlisting}
+ls -l ~/.ssh
+\end{lstlisting}
+
+Attendu :
+
+\begin{lstlisting}
+id_user1_key (cle privee)
+id_user1_key.pub (cle publique)
+\end{lstlisting}
+
+
+
+\subsection{Vérifier les permissions \lstinline{SSH}}
+
+\lstinline{SSH} refuse de fonctionner si les permissions sont mauvaises. 
+50 \% des bugs \lstinline{SSH} viennent de là.
+
+
+\subsection{Permissions STRICTES (indispensable)}
+
+Sur client :
+
+\begin{lstlisting}
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/id_user1_key
+chmod 644 ~/.ssh/id_useri1_key.pub
+chmod 600 ~/.ssh/config
+\end{lstlisting}
+
+
+Sur le serveur, sur le compte client \userOne{}, éventuellement créer le répertoires:
+
+\begin{lstlisting}
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+chmod 700 ~
+\end{lstlisting}
+
+
+\subsection{Copier la clé publique vers le serveur}
+
+Méthode recommandée (simple)
+
+\begin{lstlisting}
+ssh-copy-id user1@myserver.local
+\end{lstlisting}
+
+Il faut avoir le fichier \lstinline{id_user1_key} le \lstinline{id_} est important.
+
+OU, si ssh-copy-id indisponible sur macOS :
+
+Méthode manuelle (fiable avec les changements de permissions)
+
+\begin{lstlisting}
+cat ~/.ssh/id_ed25519.pub | ssh user1@myserver.local\
+'mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys'
+\end{lstlisting}
+
+
+\subsection{Vérifier côté serveur que la clé est bien installée}
+Sur le serveur :
+
+\begin{lstlisting}
+ls -l ~/.ssh
+\end{lstlisting}
+
+Attendu :
+
+\begin{lstlisting}
+drwx------  .ssh
+-rw-------  authorized_keys
+\end{lstlisting}
+
+Vérifier que le fichier contient la clé :
+
+\begin{lstlisting}
+cat ~/.ssh/authorized_keys
+\end{lstlisting}
+
+Le texte de la clé publique doit se trouver.
+
+\subsection{Test de la connexion \lstinline{SSH}}
+Donnez :
+
+\begin{lstlisting}
+ssh user1@myserver.local
+\end{lstlisting}
+
+Premier message attendu :
+
+\begin{lstlisting}
+The authenticity of host 'IP (IP)' can't be established.
+Are you sure you want to continue connecting (yes/no)?
+\end{lstlisting}
+
+Cela signifie que la connexion fonctionne et que  \lstinline{SSH} n’a pas encore de clé pour ce serveur \ra{}  tapez :
+
+\begin{lstlisting}
+yes
+\end{lstlisting}
+
+\subsection{Vérifier que l’authentification par clé fonctionne}
+Sur le serveur :
+
+\begin{lstlisting}
+grep -i PubkeyAuthentication /etc/ssh/sshd_config
+\end{lstlisting}
+
+Doit être :
+
+\begin{lstlisting}
+PubkeyAuthentication yes
+\end{lstlisting}
+
+Et idéalement désactiver password login (optionnel, plus sécurisé) :
+
+Dans \lstinline{/etc/ssh/sshd_config} :
+
+\begin{lstlisting}
+PasswordAuthentication no
+\end{lstlisting}
+
+Recharger \lstinline{SSH} :
+
+\begin{lstlisting}
+sudo launchctl stop com.openssh.sshd 
+\end{lstlisting}
+
+\subsection{Débogage : vérifier pourquoi la connexion échoue}
+Sur le client :
+
+\begin{lstlisting}
+ssh -vvv user1@myserveur.local
+\end{lstlisting}
+
+Ceci produit la trace de la commande \lstinline{ssh -vvv user@IP_du_serveur}
+
+Chercher :
+
+\begin{lstlisting}
+Offering public key
+Authentication succeeded
+\end{lstlisting}
+
+Si problème de permissions, vous verrez :
+
+Authentication refused: bad ownership or modes for file ...
+
+Vérifier la connectivité réseau selon \ref{ping}
+
+Vérifier lque le serveur écoute  selon \ref{serverListen}
+
+\subsection{Vérifier que le client a accès au port 22 du serveur}
+
+Vérifier que le port 22 répond :
+
+\begin{lstlisting}
+nc -vz IP_du_serveur 22
+\end{lstlisting}
+
+Attendu :
+
+\begin{lstlisting}
+Connection to IP port 22 [tcp/ssh] succeeded!
+\end{lstlisting}
+
+
+Ta clé privée est protégée par une passphrase. C’est pour ça que tu es invité à la saisir. Cela n’a rien à voir avec le mot de passe du compte \userOne{}.
+Si tu veux éviter de taper la passphrase à chaque connexion, tu as deux solutions:
+
+Voici la configuration propre et définitive sur macOS pour ne plus jamais retaper la passphrase, tout en restant sécurisé.
+
+Objectif
+La clé reste protégée par passphrase
+Tu ne tapes la passphrase qu’une seule fois après ouverture de session
+SSH fonctionne ensuite sans interruption
+
+
+
+
+
+\subsection{Keychain (macOS Apple)}
+
+\begin{lstlisting}
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+\end{lstlisting}
+
+Vérifie :
+
+\begin{lstlisting}
+ssh-add -l
+\end{lstlisting}
+
+ Si Clé listée \ra{} OK sinon 
+ rien\ra{} problème agent
+
+
+\subsection{Recharger la config}
+source ~/.zshrc
+
+\subsection{Vérifier que c’est bien l’OpenSSH Apple}
+which ssh
+ssh -V
+
+\subsection{Nettoyer l’ancien ssh-agent (optionnel mais recommandé)}
+pkill ssh-agent
+
+
+Puis ouvre un nouveau terminal.
+
+\subsection{Ajouter la clé au Keychain (maintenant ça marche)}
+
+
+(ou sur macOS très récent)
+
+\begin{lstlisting}
+ssh-add --apple-use-keychain ~/.ssh/id_rgrmini1_key
+\end{lstlisting}
+
+\subsection{Config finale ~/.ssh/config}
+
+\begin{lstlisting}
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519
+\end{lstlisting}
+
+\subsection{Test final après reboot}
+\begin{lstlisting}
+ssh-add -l
+\end{lstlisting}
+
+
+ clé listée sans redemander la passphrase 
+
+ Ne fais PAS ça
+
+\begin{itemize}
+ \item désinstaller OpenSSH via Homebrew (inutile)
+ \item supprimer /usr/local/bin/ssh à la main
+\item  relancer \lstinline{eval "$(ssh-agent -s)"}
+\end{itemize}
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\subsection{Configuration SSH blindée}
+
+~/.ssh/config :
+
+\begin{lstlisting}
+Host *
+  IdentityAgent SSH_AUTH_SOCK
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentitiesOnly yes
+  PreferredAuthentications publickey
+\end{lstlisting}
+
+Pourquoi c’est important
+
+Option	Rôle
+
+IdentitiesOnly yes	empêche d’essayer d’autres clés
+
+PreferredAuthentications	bloque password / keyboard
+
+IdentityAgent	force l’agent
+
+UseKeychain	persistance après reboot
+
+\subsection{ Une clé par service (recommandé )}
+Exemple :
+
+\begin{lstlisting}
+ssh-keygen -t ed25519 -f ~/.ssh/id_git_github -C "github"
+ssh-keygen -t ed25519 -f ~/.ssh/id_git_gitlab -C "gitlab"
+\end{lstlisting}
+
+Config :
+
+\begin{lstlisting}
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_git_github
+
+Host gitlab.com
+  HostName gitlab.com
+  User git
+  IdentityFile ~/.ssh/id_git_gitlab
+\end{lstlisting}
+
+ Si une clé fuit → une seule plateforme compromise.
+
+\subsection{Git forcé en SSH (ZÉRO HTTPS)}
+
+\begin{lstlisting}
+git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
+git config --global url."ssh://git@gitlab.com/".insteadOf "https://gitlab.com/"
+\end{lstlisting}
+
+Vérifie :
+
+git remote -v
+
+\subsection{Vérifier l’empreinte du serveur (anti-MITM)}
+
+\begin{lstlisting}
+ssh-keyscan github.com >> ~/.ssh/known_hosts
+ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+chmod 644 ~/.ssh/known_hosts
+\end{lstlisting}
+
+ Évite les attaques “man-in-the-middle”.
+
+\subsection{Serveur Git personnel (si tu en as un)}
+
+Sur le serveur :
+
+\begin{lstlisting}
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+\end{lstlisting}
+
+DANS \lstinline{authorized_keys }:
+
+\begin{lstlisting}
+from="IP_CLIENT",no-port-forwarding,no-X11-forwarding,no-agent-forwarding ssh-ed25519 AAAA...
+\end{lstlisting}
+
+Limitation maximale.
+
+\subsection{Désactiver l’authentification par mot de passe (serveur)}
+
+\begin{lstlisting}
+/etc/ssh/sshd_config :
+
+
+PasswordAuthentication no
+PermitRootLogin no
+PubkeyAuthentication yes
+\end{lstlisting}
+
+Puis :
+
+sudo systemctl restart sshd
+
+\subsection{ Tests finaux}
+\begin{lstlisting}
+ssh -T git@github.com
+ssh -v git@github.com
+git clone git@github.com:user/repo.git
+\end{lstlisting}
+
+ Pas de mot de passe
+ Authentification publickey
+
+ Ce qu’il NE FAUT JAMAIS faire
+
+\begin{itemize}
+\item  clé sans passphrase
+\item  une seule clé partout
+\item  \lstinline{eval "$(ssh-agent -s)" sur macOS}
+ \item chmod 777 ~/.ssh
+\end{itemize}
+
+ Niveau expert (optionnel)
+
+YubiKey / FIDO2 (sk-ssh-ed25519)
+
+ProxyJump + bastion
+
+Match User git dans \lstinline{ssh_config}
+
+git config --global gpg.format ssh

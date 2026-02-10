@@ -1,0 +1,24 @@
+\section{Conclusion}
+
+
+\subsection{Utiliser ssh-agent pour mémoriser la clé}
+
+\begin{enumerate}
+    \item Démarrer l'agent SSH
+\begin{lstlisting}
+ eval "$(ssh-agent -s)"   
+\end{lstlisting}
+
+\item Ajouter ta clé privée à l'agent
+
+\begin{lstlisting}
+ssh-add ~/.ssh/id_rgrmini1_key
+\end{lstlisting}
+Ensuite, tu peux te connecter normalement :
+
+\begin{lstlisting}
+ssh rgrmini1@aplixserver.local
+\end{lstlisting}
+L’agent fournira la clé sans demander la passphrase à chaque fois.
+\end{enumerate}
+
