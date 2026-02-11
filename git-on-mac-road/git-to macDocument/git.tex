@@ -72,7 +72,7 @@ git branch -m master main
 
 Étape 2 : lier au repo distant
 \begin{lstlisting}
-git remote add origin ssh://user@serveur/chemin/mon-projet.git
+git remote add origin ssh://git@serveur/chemin/mon-projet.git
 \end{lstlisting}
 
 
@@ -182,49 +182,59 @@ git symbolic-ref HEAD refs/heads/main
 
 Vérifier :
 
+\begin{lstlisting}
 cat HEAD
+\end{lstlisting}
 
 
 Résultat attendu :
 
+\begin{lstlisting}
 ref: refs/heads/main
+\end{lstlisting}
 
-4️⃣ Supprimer l’ancienne branche master (optionnel mais propre)
+\subsection{Supprimer l’ancienne branche master (optionnel mais propre)}
 
-⚠️ uniquement si plus personne ne l’utilise :
+ uniquement si plus personne ne l’utilise :
 
+\begin{lstlisting}
 git push origin --delete master
+\end{lstlisting}
 
-5️⃣ Mettre à jour les autres clients (si existants)
+\subsection{Mettre à jour les autres clients (si existants)}
 
 Sur chaque machine :
 
+\begin{lstlisting}
 git fetch origin
 git branch -m master main
 git branch -u origin/main main
 git remote set-head origin -a
+\end{lstlisting}
 
-✅ Vérifications finales
+Vérifications finales
+
+\begin{lstlisting}
 git branch -a
 git remote show origin
-
+\end{lstlisting}
 
 Tu dois voir :
 
+\begin{lstlisting}
 branche locale : main
 
 distante : origin/main
 
-HEAD → main
+HEAD \ra{} main
+\end{lstlisting}
 
-🧠 Cas particuliers
-🔴 Eclipse ne montre aucune branche
 
-➡️ Étape 3 non faite
+Étape 3 non faite
 
-🔴 Repo bare sans commits
+ Repo bare sans commits
 
-➡️ Fais d’abord un commit :
+ Fais d’abord un commit :
 
 echo init > README.md
 git add README.md
@@ -234,13 +244,90 @@ git push origin master
 
 Puis recommence la procédure.
 
-🟢 Pour tous les futurs repos
-git config --global init.defaultBranch main
 
-✔️ Résumé ultra-court
+
+
+ Résumé ultra-court
+ 
+ \begin{lstlisting}
 git branch -m master main
 git push -u origin main
 cd mp.git && git symbolic-ref HEAD refs/heads/main
 git push origin --delete master
+\end{lstlisting}
 
 
+
+Problème
+ssh://rgrmini1@aplixserver/Users/git/reposGit/mp.git
+
+
+
+
+IMPORTANT En multi-user sécurisé, TOUS les accès Git passent par l’utilisateur git
+Les utilisateurs sont distingués par leurs clés SSH, pas par le compte système.
+
+
+Corriger le remote (CÔTÉ CLIENT)
+
+ \begin{lstlisting}
+git remote set-url origin ssh://git@aplixserver/Users/git/reposGit/mp.git
+\end{lstlisting}
+
+Vérifier :
+
+\begin{lstlisting}
+git remote -v
+\end{lstlisting}
+
+Résultat attendu :
+
+\begin{lstlisting}
+origin  ssh://git@aplixserver/Users/git/reposGit/mp.git (fetch)
+origin  ssh://git@aplixserver/Users/git/reposGit/mp.git (push)
+\end{lstlisting}
+
+ Vérifier que TA clé SSH est autorisée pour git
+
+Sur le serveur distant :
+
+\begin{lstlisting}
+cat /Users/git/.ssh/authorized_keys
+\end{lstlisting}
+
+Ta clé publique doit être présente.
+
+ Une clé = un utilisateur réel
+Git loguera l’auteur via le commit (user.name, user.email).
+
+Tester la connexion SSH (client)
+ssh git@aplixserver
+
+
+connexion OK → continue
+refus → clé absente ou permissions .ssh incorrectes
+
+ Vérifier les droits du repo (serveur)
+ls -ld /Users/git/reposGit/mp.git
+
+
+Attendu :
+
+drwxrwsr-x git gitdev mp.git
+
+
+Sinon :
+
+sudo chown -R git:gitdev /Users/git/reposGit/mp.git
+sudo chmod -R g+ws /Users/git/reposGit/mp.git
+
+\subsection{Push final (client)}
+git push -u origin main
+
+Règle d’or en multi-users
+Élément	Règle
+utilisateur SSH	git
+identité dev	clé SSH + commit
+répertoires	/Users/git/reposGit/*.git
+repo	bare
+droits	setgid

@@ -1,5 +1,5 @@
 \section{Organization}
-Afin de faciliter la lecture du document, nous allons utiliser la figure \ref{fig:gitorg} comme référence. 
+Afin de faciliter la lecture et l'application de ce  document, nous allons utiliser la figure \ref{fig:gitorg} comme référence. 
 Le serveur \git{} (bare repository) sera sur la machine \serv{}. Les développeurs seront sur d'autres machines sur le réseau local. Les développeurs seront \userOne{} et 
 \userTwo{}, \ldots{}
 
@@ -59,6 +59,13 @@ git version 2.52.0 // ou plus recente
 \end{lstlisting}
 
 Ceci est la  version au moment de l'écriture du document.
+
+Pour tous que tous les futurs repos commencent à la branche main
+
+\begin{lstlisting}
+git config --global init.defaultBranch main
+\end{lstlisting}
+
 
 \subsection{Vérifier qu’OpenSSH Mac est installé, sur chaque client Macs}
 
