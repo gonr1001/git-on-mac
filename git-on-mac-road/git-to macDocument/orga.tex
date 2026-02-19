@@ -1,4 +1,4 @@
-\section{Organization}
+\section{Organization du document}
 Afin de faciliter la lecture et l'application de ce  document, nous allons utiliser la figure \ref{fig:gitorg} comme référence. 
 Le serveur \git{} (bare repository) sera sur la machine \serv{}. Les développeurs seront sur d'autres machines sur le réseau local. Les développeurs seront \userOne{} et 
 \userTwo{}, \ldots{}
@@ -14,13 +14,39 @@ Il y a plusieurs étapes pour avoir  un  serveur git opérationnel.
     \item Avoir un group : \gitG{}. 
     \item L'installation de \git{} dans les machines utilisateurs et sur le serveur.
     \item L'installation de \lstinline{ssh} pour avoir une communication crypté, installer un tunnel \lstinline{ssh} pour éviter d'ouvir le port 22.
-    \item L'administration de \git{} et  gestion de repos et son utilisation.
+    \item L'administration de \git{} et  la gestion de repos et son utilisation.
 \end{enumerate}
 
-MacOS est l'interface utilisateur pour le système Unix. Nous avons utilisé les commandes qui peuvent être données sur MacOS par rapport au commendes Unix.
+MacOS est l'interface utilisateur pour le système Unix. Nous avons utilisé en priorité les commandes qui peuvent être données sur MacOS par rapport au commendes Unix.
+
+Files et dirs
+
+Server :
+\begin{lstlisting}
+.ssh/authorized_keys
+.ssh/config
+
+.bash_profile
+ssd/
+
+/ etc / ssh / sshd_config
+
+User
+
+.ssh/id_user_key
+.ssh/id_user_key.pub
+.ssh/config
+.ssh/known_hosts
+.bash_profile
+
+-- apple - use - keychain
+\end{lstlisting}
 
 
-\section{Pré-conditions}
+
+
+
+\section{Pré-conditions à vérifier avant d'avoir des problèmes}
 Au niveau de chaque machine : type de processeur. Apple Menu  \ra{} About this Mac \ra{} Processor.
 
 Au niveau de chaque machine s'assurer que l'utilisateur de la machine a un accès admin. Apple Menu  \ra{} System settings \ldots \ra{} Users \& Groups \ra{} \userX{} est admin.
@@ -29,6 +55,7 @@ Au niveau de la machine serveur s'assurer du nom \serv{}. Apple Menu  \ra{} Syst
 
 \subsection{Vérification d'accès au serveur via le réseau sur chaque client} \label{ping}
 Rappel : nom du serveur  est \serv{}
+
 \begin{lstlisting}
 ping myserveur.local 
 \end{lstlisting}
